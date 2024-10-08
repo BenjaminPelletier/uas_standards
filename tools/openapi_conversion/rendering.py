@@ -86,6 +86,8 @@ def data_type(d_type: DataType) -> List[str]:
                 lines.append('')
             if d_type.fields:
                 lines.pop()
+            else:
+                lines.extend(indent(["pass"], 1))
     else:
         lines.append(f'{d_type.name} = {d_type.python_type}')
 

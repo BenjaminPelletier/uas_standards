@@ -239,6 +239,13 @@ def make_data_types(api_name: str, schema: Dict) -> Tuple[DataType, List[DataTyp
             raise ValueError('Unrecognized type `{}` in {} type'.format(schema['type'], api_name))
     elif 'anyOf' in schema or 'allOf' in schema:
         data_type.python_type = _parse_referenced_type_name(schema, api_name)
+    elif 'oneOf' in schema:
+        options = []
+        for oneof_option in schema['oneOf']:
+            if '$ref' not in oneof_option:
+                raise NotImplementedError('Cannot parse oneOf options that are not $refs')
+            options.append(get_data_type_name(oneof_option['$ref'], api_name))
+        data_type.python_type = f"Union[{', '.join(options)}]"
 
     if 'enum' in schema:
         data_type.enum_values = _make_python_enums(schema['enum'])

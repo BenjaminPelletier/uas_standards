@@ -85,3 +85,12 @@ docker container run -it \
 	  openapi-python-converter \
 	      --api /resources/interfaces/interuss/automated_testing/versioning/versioning.yaml \
 	      --python_output /resources/src/uas_standards/interuss/automated_testing/versioning/api.py
+
+echo "EUROCAE ED-318"
+mkdir -p $(pwd)/../../src/uas_standards/eurocae/ed318
+docker container run -it \
+  	-v "$(pwd)/../..:/resources" \
+	  openapi-python-converter \
+	      --jsonschema /resources/interfaces/eurocae/ed318/schema/Schema_GeoZones.json \
+	      --objectname FeatureCollection \
+	      --python_output /resources/src/uas_standards/eurocae/ed318/geozones.py
